@@ -14,6 +14,12 @@ AuraLink (P35), merkezi bir medya sunucusuna ihtiyaç duymadan, kullanıcılar a
 
 Gizliliği ön planda tutan bu proje; avukatlar, terapistler ve hassas veri iletişimi yapan şirketler için tasarlanmıştır. Sadece odaları eşleştirmek (sinyalleşme) ve SMTP e-posta tabanlı 6 haneli OTP doğrulama kodunu göndermek için Node.js ve Socket.IO kullanır.
 
+### Neden P2P (Peer-to-Peer)?
+
+1. **Görüntü ve Ses Akışı P2P'dir (WebRTC):** Kullanıcılar kamerayı ve mikrofonu açtığında, video/ses verileri bir sunucuya gidip oradan karşı tarafa aktarılmaz. WebRTC teknolojisi sayesinde doğrudan A kullanıcısından B kullanıcısına şifreli bir tünel üzerinden akar. Bu sayede sunucuda veri depolanması veya izlenmesi teknik olarak imkansızdır.
+2. **Sunucunun Tek Rolü "Sinyalleşme" (Signaling):** İki bilgisayarın doğrudan birbirine bağlanabilmesi için önce birbirlerini bulmaları gerekir. Node.js ve Socket.IO sadece bu tanışma aşamasında devreye girer. Eşleşme sağlandıktan sonra medya aktarımı için sunucu aradan çekilir.
+3. **Güvenlik ve OTP:** Sunucu ayrıca kimlik doğrulaması (SMTP ile e-posta OTP kodunun gönderilmesi) gibi güvenlik katmanlarını yönetir, ancak kişisel medya akışına asla dokunmaz.
+
 ## 🎥 Demo
 
 🔗 **Canlı Demo (GitHub):** https://github.com/RabiaHandil/p2p-connect
