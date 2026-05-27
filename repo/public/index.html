@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraLink - Güvenli ve Canlı P2P Sohbet</title>
+    <meta name="description" content="AuraLink - Güvenli, şifreli, e-posta doğrulamalı anlık P2P görüntülü sohbet uygulaması.">
+    <link rel="stylesheet" href="style.css?v=1.0.1">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Tema Değiştirme Butonu (Gündüz/Gece) -->
+    <button id="theme-toggle-btn" class="theme-toggle-btn" title="Temayı Değiştir">
+        <span class="theme-toggle-icon">🌙</span>
+    </button>
+
+    <!-- Yüzen emoji arka planı -->
+    <div id="emoji-bg"></div>
+
+    <!-- Arka plan partikülleri -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div id="app">
+        <!-- ========== GİRİŞ EKRANI ========== -->
+        <section id="login-container" class="card">
+            <div class="logo-wrap">
+                <div class="logo-icon">📡</div>
+                <h1 class="logo">Aura<span class="accent-text">Link</span></h1>
+                <p class="subtitle">Güvenli · Şifreli · Gerçek Zamanlı Görüşme</p>
+            </div>
+
+            <div class="form-group">
+                <!-- Kullanıcı Adı -->
+                <div class="input-field">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" placeholder="Kullanıcı Adınız" autocomplete="off">
+                </div>
+
+                <!-- E-posta + Kod Gönder -->
+                <div class="input-field-group">
+                    <div class="input-field">
+                        <span class="input-icon">📧</span>
+                        <input type="email" id="email" placeholder="E-posta Adresiniz" autocomplete="off" disabled>
+                    </div>
+                    <button id="send-code-btn" class="sm-btn disabled" disabled>Kod Gönder</button>
+                </div>
+
+                <!-- Simülasyon Kodu Göstergesi -->
+                <div id="sim-code-box" class="sim-code-box hidden">
+                    <span class="sim-label">🧪 Simülasyon Kodu:</span>
+                    <span id="sim-code-value" class="sim-code-value">------</span>
+                    <button id="copy-code-btn" class="copy-btn" title="Kopyala">📋</button>
+                </div>
+
+                <!-- Doğrulama Kodu -->
+                <div id="verification-section" class="input-field-group hidden">
+                    <div class="input-field">
+                        <span class="input-icon">🛡️</span>
+                        <input type="text" id="verify-code-input" placeholder="6 Haneli Kodu Girin" maxlength="6" autocomplete="off">
+                    </div>
+                    <button id="verify-btn" class="sm-btn accent">Doğrula</button>
+                </div>
+
+                <!-- Oda Bilgileri -->
+                <div class="divider"><span>Oda Bilgileri</span></div>
+
+                <div class="input-field">
+                    <span class="input-icon">🏠</span>
+                    <input type="text" id="room-id" placeholder="Oda Adı" autocomplete="off" disabled>
+                </div>
+                <div class="input-field">
+                    <span class="input-icon">🔑</span>
+                    <input type="password" id="password" placeholder="Oda Şifresi" disabled>
+                </div>
+
+                <button id="join-btn" class="main-btn disabled" disabled>
+                    <span class="btn-icon">🎥</span> Sohbete Katıl
+                </button>
+                <p id="auth-status" class="status-msg">Önce e-postanızı doğrulayın.</p>
+            </div>
+        </section>
+
+        <!-- ========== GÖRÜŞME EKRANI ========== -->
+        <section id="chat-container" class="hidden">
+            <!-- Üst Bar -->
+            <div class="chat-header">
+                <div class="header-left">
+                    <div class="logo-small">📡 AuraLink</div>
+                    <div class="room-badge">
+                        <span class="room-dot"></span>
+                        <span>Oda: <b id="current-room">...</b></span>
+                    </div>
+                </div>
+                <div id="connection-status" class="status-pill">⏳ Bağlanıyor...</div>
+            </div>
+
+            <!-- Ana Alan: Video + Chat -->
+            <div class="main-workspace">
+                <!-- Video Alanı -->
+                <div class="video-area">
+                    <!-- Uzak Kullanıcı (büyük) -->
+                    <div class="video-card remote-card">
+                        <video id="remote-video" autoplay playsinline></video>
+                        <div id="remote-loader" class="waiting-layer">
+                            <div class="waiting-animation">
+                                <div class="ring ring-1"></div>
+                                <div class="ring ring-2"></div>
+                                <div class="ring ring-3"></div>
+                                <span class="waiting-icon">👤</span>
+                            </div>
+                            <p class="waiting-text">Arkadaşınız bekleniyor...</p>
+                        </div>
+                        <div class="video-label" id="remote-label">Karşı Taraf</div>
+                        <div id="typing-indicator" class="typing-indicator hidden">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+
+                    <!-- Yerel Kullanıcı (küçük, PiP) -->
+                    <div class="video-card local-card">
+                        <video id="local-video" autoplay playsinline muted></video>
+                        <div class="video-label" id="local-label">Siz</div>
+                    </div>
+                </div>
+
+                <!-- Sohbet Paneli -->
+                <div class="chat-panel" id="chat-panel">
+                    <div class="chat-panel-header">
+                        <span>💬 Sohbet</span>
+                        <button id="toggle-chat" class="panel-close-btn" title="Kapat">✕</button>
+                    </div>
+                    <div class="messages-area" id="messages-area">
+                        <div class="system-msg">Sohbet başladı. Güvenli bağlantı 🔒</div>
+                    </div>
+                    <div class="chat-input-area">
+                        <div class="emoji-picker" id="emoji-picker">
+                            😀 😂 😍 🔥 👍 👋 ❤️ 🎉 😎 🤔 😅 💪 🙌 ✅ 🚀
+                        </div>
+                        <div class="chat-input-row">
+                            <button id="emoji-btn" class="emoji-toggle-btn" title="Emoji">😀</button>
+                            <input type="text" id="chat-input" placeholder="Mesaj yazın..." maxlength="500" autocomplete="off">
+                            <button id="send-msg-btn" class="send-btn" title="Gönder">➤</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kontrol Paneli -->
+            <div class="control-panel">
+                <button id="toggle-mic" class="ctrl-btn" title="Mikrofon Aç/Kapat">
+                    <span class="ctrl-icon">🎤</span>
+                    <span class="ctrl-label">Mikrofon</span>
+                </button>
+                <button id="toggle-video" class="ctrl-btn" title="Kamera Aç/Kapat">
+                    <span class="ctrl-icon">📷</span>
+                    <span class="ctrl-label">Kamera</span>
+                </button>
+                <button id="share-screen" class="ctrl-btn" title="Ekran Paylaş">
+                    <span class="ctrl-icon">🖥️</span>
+                    <span class="ctrl-label">Ekran</span>
+                </button>
+                <button id="toggle-chat-btn" class="ctrl-btn" title="Sohbeti Göster/Gizle">
+                    <span class="ctrl-icon">💬</span>
+                    <span class="ctrl-label">Sohbet</span>
+                    <span id="unread-badge" class="unread-badge hidden">0</span>
+                </button>
+                <button id="bg-picker-btn" class="ctrl-btn" title="Arka Planı Değiştir">
+                    <span class="ctrl-icon">🎨</span>
+                    <span class="ctrl-label">Arka Plan</span>
+                </button>
+                <button id="leave-call" class="ctrl-btn exit-ctrl-btn" title="Görüşmeyi Bitir">
+                    <span class="ctrl-icon">📞</span>
+                    <span class="ctrl-label">Kapat</span>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Arka Plan Seçici Modal -->
+    <div id="bg-picker-panel" class="bg-picker-panel hidden">
+        <div class="bg-picker-header">
+            <span>🎨 Arka Plan Seç</span>
+            <button id="bg-picker-close" class="panel-close-btn">✕</button>
+        </div>
+
+        <!-- Hazır Gradyanlar -->
+        <div class="bg-section-title">✨ Gradyanlar</div>
+        <div class="bg-grid" id="bg-grid">
+            <div class="bg-swatch active" data-bg="default" title="Varsayılan"
+                style="background:radial-gradient(ellipse at 20% 20%,#1e1b4b,#0f0c29 40%,#1a0533)"></div>
+            <div class="bg-swatch" data-bg="aurora"
+                style="background:linear-gradient(135deg,#0f2027,#203a43,#2c5364)"></div>
+            <div class="bg-swatch" data-bg="sunset"
+                style="background:linear-gradient(135deg,#ff6b6b,#feca57,#ff9ff3)"></div>
+            <div class="bg-swatch" data-bg="ocean"
+                style="background:linear-gradient(135deg,#0575e6,#021b79)"></div>
+            <div class="bg-swatch" data-bg="forest"
+                style="background:linear-gradient(135deg,#134e5e,#71b280)"></div>
+            <div class="bg-swatch" data-bg="candy"
+                style="background:linear-gradient(135deg,#f953c6,#b91d73)"></div>
+            <div class="bg-swatch" data-bg="midnight"
+                style="background:linear-gradient(135deg,#232526,#414345)"></div>
+            <div class="bg-swatch" data-bg="galaxy"
+                style="background:radial-gradient(ellipse at top,#1b2735,#090a0f)"></div>
+            <div class="bg-swatch" data-bg="nordic"
+                style="background:linear-gradient(135deg,#2d6a4f,#1b4332,#081c15)"></div>
+            <div class="bg-swatch" data-bg="fire"
+                style="background:linear-gradient(135deg,#f12711,#f5af19)"></div>
+            <div class="bg-swatch" data-bg="violet"
+                style="background:linear-gradient(135deg,#4776e6,#8e54e9)"></div>
+            <div class="bg-swatch" data-bg="rose"
+                style="background:linear-gradient(135deg,#f64f59,#c471ed,#12c2e9)"></div>
+        </div>
+
+        <!-- Düz Renkler -->
+        <div class="bg-section-title">🖌️ Düz Renk</div>
+        <div class="bg-solid-row">
+            <div class="bg-swatch solid" data-bg="solid" data-color="#0f0c29" style="background:#0f0c29"></div>
+            <div class="bg-swatch solid" data-bg="solid" data-color="#1a1a2e" style="background:#1a1a2e"></div>
+            <div class="bg-swatch solid" data-bg="solid" data-color="#0d1b2a" style="background:#0d1b2a"></div>
+            <div class="bg-swatch solid" data-bg="solid" data-color="#111827" style="background:#111827"></div>
+            <input type="color" id="custom-color" value="#0f0c29" title="Özel Renk" class="custom-color-input">
+        </div>
+
+        <!-- Özel Görsel Yükleme -->
+        <div class="bg-section-title">🖼️ Görsel Yükle</div>
+        <label class="upload-btn" for="bg-upload-input">📂 Dosya Seç</label>
+        <input type="file" id="bg-upload-input" accept="image/*" style="display:none">
+        <button id="bg-reset-btn" class="reset-bg-btn">↩ Varsayılana Dön</button>
+    </div>
+
+    <!-- Toast Bildirimi -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js?v=1.0.4"></script>
+</body>
+</html>

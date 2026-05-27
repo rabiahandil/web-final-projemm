@@ -1,0 +1,16 @@
+{
+  "name": "auralink",
+  "version": "1.0.0",
+  "description": "AuraLink - Real-time P2P video chat using WebRTC + Socket.IO",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.22.1",
+    "nodemailer": "^8.0.5",
+    "selfsigned": "^5.5.0",
+    "socket.io": "^4.8.3"
+  }
+}
