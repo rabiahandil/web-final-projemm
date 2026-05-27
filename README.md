@@ -4,13 +4,12 @@
 
 ![Zorluk](https://img.shields.io/badge/Zorluk-%C3%87ok%20Zor-blueviolet)
 ![Puan](https://img.shields.io/badge/Puan-100-blue)
-![Hafta](https://img.shields.io/badge/Hafta-4-gray)
 ![Lisans](https://img.shields.io/badge/License-MIT-green)
 ![Durum](https://img.shields.io/badge/Durum-Tamamland%C4%B1-yellow)
 
 ## 🎯 Özet
 
-AuraLink (P35), merkezi bir medya sunucusuna ihtiyaç duymadan, kullanıcılar arasında doğrudan (Peer-to-Peer) veri akışı sağlayan WebRTC tabanlı şifreli bir görüntülü sohbet uygulamasıdır. Klasik platformların aksine medya trafiği hiçbir sunucuda depolanmaz veya izlenemez. 
+AuraLink, merkezi bir medya sunucusuna ihtiyaç duymadan, kullanıcılar arasında doğrudan (Peer-to-Peer) veri akışı sağlayan WebRTC tabanlı şifreli bir görüntülü sohbet uygulamasıdır. Klasik platformların aksine medya trafiği hiçbir sunucuda depolanmaz veya izlenemez. 
 
 Gizliliği ön planda tutan bu proje; avukatlar, terapistler ve hassas veri iletişimi yapan şirketler için tasarlanmıştır. Sadece odaları eşleştirmek (sinyalleşme) ve SMTP e-posta tabanlı 6 haneli OTP doğrulama kodunu göndermek için Node.js ve Socket.IO kullanır.
 

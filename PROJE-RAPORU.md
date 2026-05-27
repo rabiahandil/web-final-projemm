@@ -1,6 +1,6 @@
 # WebRTC P2P Görüntülü Sohbet
 
-> **Proje Kodu:** P35 · **Zorluk:** Çok Zor · **Puan:** 100 · **Hafta:** 4
+> **Zorluk:** Çok Zor · **Puan:** 100
 
 **Öğrenci:** RABİA HANDİL  
 **Öğrenci No:** 24080410008  
@@ -34,8 +34,7 @@
 
 | Alan | Değer |
 |------|-------|
-| Proje Adı | AuraLink (P35) WebRTC P2P Görüntülü Sohbet |
-| Proje Kodu | P35 |
+| Proje Adı | AuraLink WebRTC P2P Görüntülü Sohbet |
 | Slogan (1 cümle) | *Sunucu depolaması olmayan, uçtan uca şifreli tamamen güvenli P2P görüntülü görüşme.* |
 | Kategori | İletişim / Gizlilik Odaklı SaaS |
 | Hedef Platform | Web (responsive) |

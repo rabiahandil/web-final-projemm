@@ -17,7 +17,7 @@
 
 ## 🎯 Proje Hakkında
 
-**AuraLink (P35)**, merkezi sunucu bağımlılığını tamamen ortadan kaldıran, kullanıcılar arasında doğrudan ve şifreli veri akışı sağlayan **WebRTC tabanlı uçtan uca P2P görüntülü sohbet uygulamasıdır.**
+**AuraLink**, merkezi sunucu bağımlılığını tamamen ortadan kaldıran, kullanıcılar arasında doğrudan ve şifreli veri akışı sağlayan **WebRTC tabanlı uçtan uca P2P görüntülü sohbet uygulamasıdır.**
 
 > 🔒 Ses, video ve sohbet verileri **hiçbir sunucuda depolanmaz** — doğrudan tarayıcılar arasında şifreli olarak aktarılır.
 
